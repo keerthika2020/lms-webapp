@@ -7,9 +7,9 @@ export async function PATCH(req:Request,
 ){
     try{
         const {userId}= await auth();
-        const {courseId} = params;
+        const {courseId} = await params;
         const values = await req.json();
-        const { imageUrl } = await req.json(); 
+        
         if(!userId){
             return new NextResponse("Unauthorized ", {status:401});
         }
@@ -19,10 +19,9 @@ export async function PATCH(req:Request,
             id: courseId,
             userId
            },
-           data:{
-            ...values,
-            imageUrl,
-           }
+           data: {
+           ...values,
+          },
         });
         return NextResponse.json(course);
     }catch(error){

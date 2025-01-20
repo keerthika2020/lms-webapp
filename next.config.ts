@@ -9,10 +9,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "utfs.io",
-        pathname: "/a/vvw5alwqmf/*",
+        pathname: "/a/vvw5alwqmf/**",
       },
     ],
-    domains: ["utfs.io"],
+   domains: ["utfs.io","sea1.ingest.uploadthing.com"],
   },
 };
 

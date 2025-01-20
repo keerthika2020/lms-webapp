@@ -12,7 +12,8 @@ import toast from "react-hot-toast";
 
 import { Course } from "@prisma/client";
 import Image from "next/image";
-import { FileUpload } from "@/components/file-upload";
+//import { FileUpload } from "@/components/file-upload";
+import FileUpload from "@/components/file-upload";
 
 interface ImageFormProps{
     initialData:Course
@@ -44,20 +45,35 @@ export const ImageForm = ({
 
     // const { isSubmitting,isValid} = form.formState;
     
-    const onSubmit = async(values: { imageUrl: string })=>{
-       try{
-        
-        await axios.patch(`/api/courses/${courseId}`,values);
-        toast.success("Course updated");
-        toggleEdit();
-        router.refresh();
-        
-       }catch{
-        toast.error("Something went wrong");
-        console.error(Error);
-
-       }
-    }
+    const onSubmit = async (values: { imageUrl: string }) => {
+        try {
+          // Here you are sending the URL to the PATCH endpoint
+          await axios.patch(`/api/courses/${courseId}`, values);
+          toast.success("Course updated");
+          toggleEdit();
+          router.refresh();
+        } catch (error) {
+          toast.error("Something went wrong");
+          console.error(error);
+        }
+      };
+    // const onSubmit = async (values: { imageUrl: string }) => {
+    //     try {
+    //       await fetch(`/api/courses/${courseId}`, {
+    //         method: "PATCH",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify(values),
+    //       });
+    //       toast.success("Course image updated");
+    //       toggleEdit();
+    //       router.refresh();
+    //     } catch (error) {
+    //       toast.error("Something went wrong");
+    //       console.error(error);
+    //     }
+    //   };
     return(
         <div className="mt-6 border bg-slate-100 rounded-md p-4">
            <div className="font-medium flex items-center justify-between">
@@ -105,15 +121,15 @@ export const ImageForm = ({
            )}
            {isEditing && (
             <div>
-                <FileUpload 
-                endpoint="courseImage"
-                onChange={(url) => {
-                    if (url) {
-                        console.log("Uploaded URL:", url); // Debugging step
-                        onSubmit({ imageUrl: url });
-                    }
-                }}
-            />
+                 <FileUpload
+            endpoint="courseImage"
+            onChange={(url?: string) => {
+              if (url) {
+                console.log("Uploaded image URL:", url);
+                onSubmit({ imageUrl: url }); // Pass the image URL to the PATCH request
+              }
+            }}
+          />
 
                 <div className="text-xs text-muted-foreground mt-4">
                     16:9 aspect ratio  recommended
